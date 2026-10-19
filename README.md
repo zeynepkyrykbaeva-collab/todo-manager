@@ -93,6 +93,7 @@ erDiagram
         datetime created_at
     }
 ```
+SQL-схема: database/schema.sql
 
 **Байланыстар:**
 - Бір пайдаланушыда көп санат және көп тапсырма болады (1 : N).
