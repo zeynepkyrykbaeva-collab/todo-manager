@@ -1,0 +1,56 @@
+digraph ER {
+  graph [rankdir=LR, splines=true, nodesep=0.9, ranksep=1.6, bgcolor="white", fontname="DejaVu Sans", pad=0.4,
+         label="To-Do Manager — ER-диаграмма (crow's foot)", labelloc=t, fontsize=22];
+  node [shape=plain, fontname="DejaVu Sans", fontsize=13];
+  edge [fontname="DejaVu Sans", fontsize=11, color="#374151", penwidth=1.6];
+
+  users [label=<
+  <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" COLOR="#4F46E5">
+    <TR><TD BGCOLOR="#4F46E5" COLSPAN="2"><FONT COLOR="white"><B>users</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT"><B>PK</B></TD><TD ALIGN="LEFT"><B>id</B> INT</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">username VARCHAR(50) UQ</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">email VARCHAR(100) UQ</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">password_hash VARCHAR(255)</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">role ENUM(user, admin)</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">created_at DATETIME</TD></TR>
+  </TABLE>>];
+
+  categories [label=<
+  <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" COLOR="#0E9F6E">
+    <TR><TD BGCOLOR="#0E9F6E" COLSPAN="2"><FONT COLOR="white"><B>categories</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT"><B>PK</B></TD><TD ALIGN="LEFT"><B>id</B> INT</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>FK</B></TD><TD ALIGN="LEFT">user_id → users.id</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">name VARCHAR(50)</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">color CHAR(7)</TD></TR>
+  </TABLE>>];
+
+  tasks [label=<
+  <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" COLOR="#D97706">
+    <TR><TD BGCOLOR="#D97706" COLSPAN="2"><FONT COLOR="white"><B>tasks</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT"><B>PK</B></TD><TD ALIGN="LEFT"><B>id</B> INT</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>FK</B></TD><TD ALIGN="LEFT">user_id → users.id</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>FK</B></TD><TD ALIGN="LEFT">category_id → categories.id (NULL)</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">title VARCHAR(150)</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">description TEXT</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">priority ENUM(low, medium, high)</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">status ENUM(todo, in_progress, done)</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">due_date DATE</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">created_at / updated_at DATETIME</TD></TR>
+  </TABLE>>];
+
+  comments [label=<
+  <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" COLOR="#DB2777">
+    <TR><TD BGCOLOR="#DB2777" COLSPAN="2"><FONT COLOR="white"><B>comments</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT"><B>PK</B></TD><TD ALIGN="LEFT"><B>id</B> INT</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>FK</B></TD><TD ALIGN="LEFT">task_id → tasks.id</TD></TR>
+    <TR><TD ALIGN="LEFT"><B>FK</B></TD><TD ALIGN="LEFT">user_id → users.id</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">body TEXT</TD></TR>
+    <TR><TD></TD><TD ALIGN="LEFT">created_at DATETIME</TD></TR>
+  </TABLE>>];
+
+  users -> categories [dir=both, arrowtail=tee, arrowhead=crowodot, arrowsize=1.4, label="  1 : N  "];
+  users -> tasks      [dir=both, arrowtail=tee,     arrowhead=crowodot, arrowsize=1.4, label="  1 : N  "];
+  categories -> tasks [dir=both, arrowsize=1.4, arrowtail=teeodot, arrowhead=crowodot, label="  1 : N  "];
+  tasks -> comments   [dir=both, arrowsize=1.4, arrowtail=tee,     arrowhead=crowodot, label="  1 : N  "];
+  users -> comments   [dir=both, arrowsize=1.4, arrowtail=tee,     arrowhead=crowodot, label="  1 : N  "];
+}
